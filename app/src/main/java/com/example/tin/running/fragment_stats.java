@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.tin.running.Service.ChronometerService;
 
+import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Handler;
@@ -222,16 +223,16 @@ public class fragment_stats extends Fragment {
                 if (MainActivity.mBound && MainActivity.mBoundChrono) {
 
                     Double maxSpeed1 = MainActivity.mGPSService.getMaxSpeed() * (3.6);
-                    maxSpeedData.setText(maxSpeed1.toString() + " Km/h.");
+                    maxSpeedData.setText(new DecimalFormat("#.#").format(maxSpeed1) + " Km/h");
 
-                    Double distance2 = MainActivity.mGPSService.getDistance() * (3.6);
-                    distanceData.setText(distance2.toString() + " Km.");
+                    Double distance2 = (MainActivity.mGPSService.getDistance() / 1000) ;
+                    distanceData.setText(new DecimalFormat("#.###").format(distance2) + " Km");
 
-                    Double currentSpeed2 = MainActivity.mGPSService.getCurrentSpeed();
-                    currentSpeed.setText(currentSpeed2.toString() + " Km/h.");
+                    Double currentSpeed2 = MainActivity.mGPSService.getCurrentSpeed() * (3.6);
+                    currentSpeed.setText(new DecimalFormat("#.#").format(currentSpeed2) + " Km/h");
 
-                    Double avSpeed = distance2 / MainActivity.mChronometerService.getSeconds() * 3600;
-                    avSpeedData.setText(avSpeed.toString() + " Km/h.");
+                    Double avSpeed = distance2 / MainActivity.mChronometerService.getSeconds() * (3.6);
+                    avSpeedData.setText(new DecimalFormat("#.#").format(avSpeed) + " Km/h");
 
                     chronometer.setText(MainActivity.mChronometerService.getFormatTime());
                 }
@@ -284,8 +285,6 @@ public class fragment_stats extends Fragment {
             avSpeedData.setText(savedInstanceState.getString("avSpeedData"));
             currentSpeed.setText(savedInstanceState.getString("currentSpeed"));
             chronometer.setText(savedInstanceState.getString("chronometer"));
-            avSpeedData.setText("a ver si esto anda");
-
         }
     }
 

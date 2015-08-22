@@ -4,33 +4,30 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.Chronometer;
-import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.tin.running.JavaClases.StatsSQLiteHelper;
 import com.example.tin.running.Service.ChronometerService;
 import com.example.tin.running.Service.GPSService;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class MainActivity extends ActionBarActivity
@@ -40,10 +37,10 @@ public class MainActivity extends ActionBarActivity
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private int contGPSStart = 0;
-
     public static GPSService mGPSService;
-
     public static boolean raceOnStart = false ;
+    public Button stopRace ;
+    public static StatsSQLiteHelper usdbh;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -52,7 +49,7 @@ public class MainActivity extends ActionBarActivity
     private Bundle state = new Bundle();
     private fragment_stats  fragmentsStats = fragment_stats.newInstance(state);
     private MapFragment fragmentMap = MapFragment.newInstance("null","null");
-    private DataFragment fragmentData = DataFragment.newInstance(null, null);
+    private DataFragment fragmentData = DataFragment.newInstance(state);
 
     // Creacion del ChronnometerServiceConnection
     public static boolean mBoundChrono;
@@ -107,7 +104,46 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     protected void onStart() {
+
         super.onStart();
+
+        usdbh = new StatsSQLiteHelper(this,"DB_Stats", null, 1);
+
+        stopRace = (Button) this.findViewById(R.id.stop_race);
+        stopRace.setEnabled(false);
+        stopRace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (MainActivity.mBoundChrono) {
+                    fragmentsStats.chronometer.setText(MainActivity.mChronometerService.getFormatTime());
+                }
+                if (mBound) {
+                    Toast.makeText(MainActivity.this,getString(R.string.finish_gps), Toast.LENGTH_SHORT)
+                            .show();
+                    unbindService(mGPSServiceConnection);
+                    mBound = false;
+                }
+                unbindService(mChronoServiceConnection);
+                raceOnStart = false;
+                mBoundChrono = false;
+                stopRace.setEnabled(false);
+
+                SQLiteDatabase db = usdbh.getWritableDatabase();
+
+                //Si hemos abierto correctamente la base de datos
+                if (db != null) {
+
+                    SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+                    String fecha = s.format(new Date());
+
+                    db.execSQL("INSERT INTO Stats (fecha, distancia, velMax, velPromedio, tiempo) " +
+                            "VALUES ('" + fecha + "', '" + fragmentsStats.distanceData.getText() + "', '" + fragmentsStats.maxSpeedData.getText() + "', '" + fragmentsStats.avSpeedData.getText() + "', '" + fragmentsStats.chronometer.getText() + "')");
+
+                    //Cerramos la base de datos
+                    db.close();
+                }
+            }
+        });
     }
 
     @Override
@@ -121,7 +157,6 @@ public class MainActivity extends ActionBarActivity
            fragmentManager.beginTransaction()
                     .replace(R.id.container, fragmentsStats)
                     .commit();
-
         }
 
         if (position == 1) {
@@ -130,8 +165,10 @@ public class MainActivity extends ActionBarActivity
                     .commit();
         }
 
-        if (position == 2){
-            fragmentManager.beginTransaction().replace(R.id.container, fragmentData).commit();
+        if (position == 2) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragmentData)
+                    .commit();
         }
     }
 
@@ -142,6 +179,9 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
+                break;
+            case 3:
+                mTitle = getString(R.string.title_section3);
                 break;
         }
     }
@@ -186,7 +226,7 @@ public class MainActivity extends ActionBarActivity
                 mBound = true ;
             } else {
                 if (mBound) {
-                    Toast.makeText(this, "el servicio termino", Toast.LENGTH_SHORT)
+                    Toast.makeText(this,getString(R.string.finish_gps), Toast.LENGTH_SHORT)
                             .show();
                     unbindService(mGPSServiceConnection);
                     mBound = false;
@@ -199,10 +239,10 @@ public class MainActivity extends ActionBarActivity
         if (id==R.id.start_race){
             Toast.makeText(this, "Se inicia la carrera", Toast.LENGTH_SHORT)
                     .show();
-            bindService (intentChrono , mChronoServiceConnection, Context.BIND_AUTO_CREATE);
+            bindService(intentChrono, mChronoServiceConnection, Context.BIND_AUTO_CREATE);
             raceOnStart = true ;
             mBoundChrono = true ;
-
+            stopRace.setEnabled(true);
         }
         return super.onOptionsItemSelected(item);
     }

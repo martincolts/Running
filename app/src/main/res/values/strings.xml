@@ -26,9 +26,17 @@
 
     <!-- carteles -->
     <string name="iniciate_gps">Gps service launched</string>
+    <string name="finish_gps">Gps service finished</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
+	
+	<string name="fecha">Fecha</string>  
+    <string name="distancia">Distancia</string>  
+    <string name="velMax">Vel. Max.</string>
+    <string name="velPromedio">Vel. Promedio</string>
+    <string name="tiempo">Tiempo</string>
 
 </resources>

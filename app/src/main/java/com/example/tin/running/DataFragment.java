@@ -1,49 +1,45 @@
 package com.example.tin.running;
 
 import android.app.Activity;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
+import org.w3c.dom.Text;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DataFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DataFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DataFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
+    TableLayout tabla;
+    TableLayout cabecera;
+    TableRow.LayoutParams layoutFila;
+    TableRow.LayoutParams layoutFecha;
+    TableRow.LayoutParams layoutDistancia;
+    TableRow.LayoutParams layoutVelMax;
+    TableRow.LayoutParams layoutVelPromedio;
+    TableRow.LayoutParams layoutTiempo;
+
+    Resources rs;
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DataFragment.
-     */
     // TODO: Rename and change types and number of parameters
-    public static DataFragment newInstance(String param1, String param2) {
+    public static DataFragment newInstance(Bundle arguments) {
         DataFragment fragment = new DataFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
+        if(arguments != null){
+            fragment.setArguments(arguments);
+        }
         return fragment;
     }
 
@@ -54,17 +50,53 @@ public class DataFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        setHasOptionsMenu(true);
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_data, container, false);
+
+        View v = inflater.inflate(R.layout.fragment_data, container, false);
+        //super.getActivity().setContentView(R.layout.fragment_data);
+        /*
+        if (v != null) {
+            rs = this.getResources();
+            tabla = (TableLayout) super.getActivity().findViewById(R.id.tabla);
+            cabecera = (TableLayout) super.getActivity().findViewById(R.id.cabecera);
+            layoutFila = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams.WRAP_CONTENT);
+            layoutFecha = new TableRow.LayoutParams(270, TableRow.LayoutParams.WRAP_CONTENT);
+            layoutDistancia = new TableRow.LayoutParams(180, TableRow.LayoutParams.WRAP_CONTENT);
+            layoutVelMax = new TableRow.LayoutParams(160, TableRow.LayoutParams.WRAP_CONTENT);
+            layoutVelPromedio = new TableRow.LayoutParams(220, TableRow.LayoutParams.WRAP_CONTENT);
+            layoutTiempo = new TableRow.LayoutParams(220, TableRow.LayoutParams.WRAP_CONTENT);
+
+            agregarCabecera();
+            agregarFilasTabla();
+        }
+        */
+        return v;
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        rs = this.getResources();
+        tabla = (TableLayout) super.getActivity().findViewById(R.id.tabla);
+        cabecera = (TableLayout) super.getActivity().findViewById(R.id.cabecera);
+        layoutFila = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                TableRow.LayoutParams.WRAP_CONTENT);
+        layoutFecha = new TableRow.LayoutParams(270, TableRow.LayoutParams.WRAP_CONTENT);
+        layoutDistancia = new TableRow.LayoutParams(180, TableRow.LayoutParams.WRAP_CONTENT);
+        layoutVelMax = new TableRow.LayoutParams(160, TableRow.LayoutParams.WRAP_CONTENT);
+        layoutVelPromedio = new TableRow.LayoutParams(220, TableRow.LayoutParams.WRAP_CONTENT);
+        layoutTiempo = new TableRow.LayoutParams(220, TableRow.LayoutParams.WRAP_CONTENT);
+
+        agregarCabecera();
+        agregarFilasTabla();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -100,5 +132,127 @@ public class DataFragment extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
+
+    public void agregarCabecera(){
+        TableRow fila;
+        TextView txtFecha;
+        TextView txtDistancia;
+        TextView txtVelMax;
+        TextView txtVelPromedio;
+        TextView txtTiempo;
+
+        fila = new TableRow(super.getActivity());
+        fila.setLayoutParams(layoutFila);
+
+        txtFecha = new TextView(super.getActivity());
+        txtDistancia = new TextView(super.getActivity());
+        txtVelMax = new TextView(super.getActivity());
+        txtVelPromedio = new TextView(super.getActivity());
+        txtTiempo = new TextView(super.getActivity());
+
+        txtFecha.setText(rs.getString(R.string.fecha));
+        txtFecha.setGravity(Gravity.CENTER_HORIZONTAL);
+        txtFecha.setTextAppearance(super.getActivity(), R.style.etiqueta);
+        txtFecha.setBackgroundResource(R.drawable.tabla_celda_cabecera);
+        txtFecha.setLayoutParams(layoutFecha);
+
+        txtDistancia.setText(rs.getString(R.string.distancia));
+        txtDistancia.setGravity(Gravity.CENTER_HORIZONTAL);
+        txtDistancia.setTextAppearance(super.getActivity(), R.style.etiqueta);
+        txtDistancia.setBackgroundResource(R.drawable.tabla_celda_cabecera);
+        txtDistancia.setLayoutParams(layoutDistancia);
+
+        txtVelMax.setText(rs.getString(R.string.velMax));
+        txtVelMax.setGravity(Gravity.CENTER_HORIZONTAL);
+        txtVelMax.setTextAppearance(super.getActivity(), R.style.etiqueta);
+        txtVelMax.setBackgroundResource(R.drawable.tabla_celda_cabecera);
+        txtVelMax.setLayoutParams(layoutVelMax);
+
+        txtVelPromedio.setText(rs.getString(R.string.velPromedio));
+        txtVelPromedio.setGravity(Gravity.CENTER_HORIZONTAL);
+        txtVelPromedio.setTextAppearance(super.getActivity(), R.style.etiqueta);
+        txtVelPromedio.setBackgroundResource(R.drawable.tabla_celda_cabecera);
+        txtVelPromedio.setLayoutParams(layoutVelPromedio);
+
+        txtTiempo.setText(rs.getString(R.string.tiempo));
+        txtTiempo.setGravity(Gravity.CENTER_HORIZONTAL);
+        txtTiempo.setTextAppearance(super.getActivity(), R.style.etiqueta);
+        txtTiempo.setBackgroundResource(R.drawable.tabla_celda_cabecera);
+        txtTiempo.setLayoutParams(layoutTiempo);
+
+        fila.addView(txtFecha);
+        fila.addView(txtDistancia);
+        fila.addView(txtVelMax);
+        fila.addView(txtVelPromedio);
+        fila.addView(txtTiempo);
+
+        cabecera.addView(fila);
+    }
+
+    public void agregarFilasTabla(){
+
+        TableRow fila;
+        TextView txtFecha;
+        TextView txtDistancia;
+        TextView txtVelMax;
+        TextView txtVelPromedio;
+        TextView txtTiempo;
+
+        SQLiteDatabase db = MainActivity.usdbh.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Stats", null);
+
+        if (cursor.moveToLast())
+            do {
+                fila = new TableRow(super.getActivity());
+                fila.setLayoutParams(layoutFila);
+
+                txtFecha = new TextView(super.getActivity());
+                txtDistancia = new TextView(super.getActivity());
+                txtVelMax = new TextView(super.getActivity());
+                txtVelPromedio = new TextView(super.getActivity());
+                txtTiempo = new TextView(super.getActivity());
+
+                txtFecha.setText(cursor.getString(0));
+                txtFecha.setGravity(Gravity.CENTER_HORIZONTAL);
+                txtFecha.setTextAppearance(super.getActivity(), R.style.etiqueta);
+                txtFecha.setBackgroundResource(R.drawable.tabla_celda);
+                txtFecha.setLayoutParams(layoutFecha);
+
+                txtDistancia.setText(cursor.getString(1));
+                txtDistancia.setGravity(Gravity.CENTER_HORIZONTAL);
+                txtDistancia.setTextAppearance(super.getActivity(), R.style.etiqueta);
+                txtDistancia.setBackgroundResource(R.drawable.tabla_celda);
+                txtDistancia.setLayoutParams(layoutDistancia);
+
+                txtVelMax.setText(cursor.getString(2));
+                txtVelMax.setGravity(Gravity.CENTER_HORIZONTAL);
+                txtVelMax.setTextAppearance(super.getActivity(), R.style.etiqueta);
+                txtVelMax.setBackgroundResource(R.drawable.tabla_celda);
+                txtVelMax.setLayoutParams(layoutVelMax);
+
+                txtVelPromedio.setText(cursor.getString(3));
+                txtVelPromedio.setGravity(Gravity.CENTER_HORIZONTAL);
+                txtVelPromedio.setTextAppearance(super.getActivity(), R.style.etiqueta);
+                txtVelPromedio.setBackgroundResource(R.drawable.tabla_celda);
+                txtVelPromedio.setLayoutParams(layoutVelPromedio);
+
+                txtTiempo.setText(cursor.getString(4));
+                txtTiempo.setGravity(Gravity.CENTER_HORIZONTAL);
+                txtTiempo.setTextAppearance(super.getActivity(), R.style.etiqueta);
+                txtTiempo.setBackgroundResource(R.drawable.tabla_celda);
+                txtTiempo.setLayoutParams(layoutTiempo);
+
+                fila.addView(txtFecha);
+                fila.addView(txtDistancia);
+                fila.addView(txtVelMax);
+                fila.addView(txtVelPromedio);
+                fila.addView(txtTiempo);
+
+                tabla.addView(fila);
+
+            }while (cursor.moveToPrevious());
+
+    }
+
 
 }

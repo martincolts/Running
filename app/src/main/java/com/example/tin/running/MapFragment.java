@@ -43,6 +43,8 @@ public class MapFragment extends Fragment {
     }
 
     public MapFragment() {
+        // Required empty public constructor
+
     }
 
     @Override
@@ -59,15 +61,17 @@ public class MapFragment extends Fragment {
                 false);
         mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
-        mMapView.onResume();
-        mGoogleMap = mMapView.getMap();
+
+        mMapView.onResume(); // needed to get the map to display immediately
+    //agrego un comentario
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-       mGoogleMap.setMyLocationEnabled(true);
+        mGoogleMap = mMapView.getMap();
+        mGoogleMap.setMyLocationEnabled(true);
 
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         LocationListener locationListener = new LocationListener() {
@@ -79,10 +83,8 @@ public class MapFragment extends Fragment {
                 CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(coordinate, 17);
                 mGoogleMap.animateCamera(yourLocation);
                 Marker marker = mGoogleMap.addMarker(new MarkerOptions()
-                                .position(coordinate).visible(true).icon(BitmapDescriptorFactory.fromAsset("redCircule.png"))
+                                .position(new LatLng(lat, lon)).visible(true).icon(BitmapDescriptorFactory.fromAsset("pointRed.png"))
                 );
-
-
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -95,7 +97,6 @@ public class MapFragment extends Fragment {
             }
         };
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
         return v ;
     }
 

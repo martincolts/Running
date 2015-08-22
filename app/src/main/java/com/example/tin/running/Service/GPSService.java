@@ -20,8 +20,8 @@ public class GPSService extends Service {
 
     // variables a devolver
     private double maxSpeed = 0.0;
-    private double distance = 0;
-    private double currentSpeed;
+    private double distance = 0.0;
+    private double currentSpeed = 0.0;
 
     // variables auxiliares
 
@@ -52,14 +52,19 @@ public class GPSService extends Service {
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
+
                 currentSpeed = location.getSpeed();
                 if (maxSpeed < currentSpeed)
                     maxSpeed = currentSpeed;
+
                 //start location manager
                 LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
 
                 //Get last location
                 Location loc = lm.getLastKnownLocation(lm.GPS_PROVIDER);
+
+                lastLat = loc.getLatitude();
+                lastLon = loc.getLongitude();
 
                 //Request new location
                 lm.requestLocationUpdates(lm.GPS_PROVIDER, 0, 0, locationListener);
@@ -68,9 +73,8 @@ public class GPSService extends Service {
                 Location loc2 = lm.getLastKnownLocation(lm.GPS_PROVIDER);
 
                 //get the current lat and long
-                currentLat = loc.getLatitude();
-                currentLon = loc.getLongitude();
-
+                currentLat = loc2.getLatitude();
+                currentLon = loc2.getLongitude();
 
                 Location locationA = new Location("point A");
                 locationA.setLatitude(lastLat);
@@ -82,8 +86,7 @@ public class GPSService extends Service {
 
                 double distanceMeters = locationA.distanceTo(locationB);
 
-                distance = distance + (distanceMeters / 1000f);
-
+                distance = distance + (distanceMeters);
 
             }
 
