@@ -83,7 +83,7 @@ public class MapFragment extends Fragment {
                 CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(coordinate, 17);
                 mGoogleMap.animateCamera(yourLocation);
                 Marker marker = mGoogleMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(lat, lon)).visible(true).icon(BitmapDescriptorFactory.fromAsset("pointRed.png"))
+                                .position(new LatLng(lat, lon)).visible(true).icon(BitmapDescriptorFactory.fromAsset("redCircule.png"))
                 );
             }
 
