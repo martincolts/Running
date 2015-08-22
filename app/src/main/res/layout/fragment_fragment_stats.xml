@@ -1,0 +1,154 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
+    android:layout_height="wrap_content" tools:context="com.example.tin.running.fragment_stats">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="369dp"
+        android:layout_height="248dp"
+        android:layout_gravity="right|bottom"
+        android:id="@+id/stats_fragment">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/distance"
+            android:id="@+id/distance"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/vel_prom"
+            android:id="@+id/vel_prom"
+            android:layout_below="@+id/vel_max"
+            android:layout_alignLeft="@+id/vel_max"
+            android:layout_alignStart="@+id/vel_max" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/vel_max"
+            android:id="@+id/vel_max"
+            android:layout_below="@+id/distance"
+            android:layout_alignLeft="@+id/distance"
+            android:layout_alignStart="@+id/distance" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/vel_actual"
+            android:id="@+id/vel_actual"
+            android:layout_below="@+id/vel_prom"
+            android:layout_alignLeft="@+id/vel_prom"
+            android:layout_alignStart="@+id/vel_prom" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="0 Km."
+            android:id="@+id/current_speed_data"
+            android:layout_alignBottom="@+id/vel_actual"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/vel_actual"
+            android:gravity="right"
+            android:layout_toRightOf="@+id/vel_actual"
+            android:layout_toEndOf="@+id/vel_actual" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="0 Km."
+            android:id="@+id/average_speed_data"
+            android:gravity="right"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/vel_prom"
+            android:layout_alignRight="@+id/current_speed_data"
+            android:layout_alignEnd="@+id/average_speed_data" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="0 Km."
+            android:gravity="right"
+            android:id="@+id/top_speed_data"
+            android:layout_above="@+id/average_speed_data"
+            android:layout_alignRight="@+id/average_speed_data"
+            android:layout_alignEnd="@+id/average_speed_data"
+            android:layout_alignTop="@+id/vel_max"
+            android:layout_toRightOf="@+id/vel_max" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="0 Km."
+            android:gravity="right"
+            android:id="@+id/kilometers_traveled_data"
+            android:layout_alignRight="@+id/average_speed_data"
+            android:layout_alignEnd="@+id/average_speed_data"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/distance"
+            android:layout_toEndOf="@+id/distance" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/kilometers_traveled_data"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:layout_gravity="center_horizontal|bottom">
+
+        <TextView
+            android:layout_width="246dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="00:00:000"
+            android:id="@+id/chronometer2"
+            android:gravity="center|center_horizontal" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:weightSum="1">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Actualizar"
+                android:id="@+id/actualizar" />
+
+            <Button
+                android:layout_width="66dp"
+                android:layout_height="wrap_content"
+                android:text="Stop Race"
+                android:id="@+id/stop_race"
+                android:layout_weight="0.66" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
