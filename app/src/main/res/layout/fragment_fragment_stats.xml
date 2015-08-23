@@ -56,13 +56,13 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="0.0 Km/h"
             android:id="@+id/current_speed_data"
-            android:layout_alignBottom="@+id/vel_actual"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/vel_actual"
             android:gravity="right"
             android:layout_toRightOf="@+id/vel_actual"
-            android:layout_toEndOf="@+id/vel_actual" />
+            android:layout_toEndOf="@+id/vel_actual"
+            android:layout_alignBottom="@+id/vel_actual"
+            android:layout_below="@+id/vel_prom" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,10 +71,11 @@
             android:text="0.0 Km/h"
             android:id="@+id/average_speed_data"
             android:gravity="right"
-            android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/vel_prom"
             android:layout_alignRight="@+id/current_speed_data"
-            android:layout_alignEnd="@+id/average_speed_data" />
+            android:layout_alignEnd="@+id/average_speed_data"
+            android:layout_alignTop="@+id/vel_prom"
+            android:layout_above="@+id/current_speed_data" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -83,11 +84,11 @@
             android:text="0.0 Km/h"
             android:gravity="right"
             android:id="@+id/top_speed_data"
-            android:layout_above="@+id/average_speed_data"
             android:layout_alignRight="@+id/average_speed_data"
             android:layout_alignEnd="@+id/average_speed_data"
             android:layout_alignTop="@+id/vel_max"
-            android:layout_toRightOf="@+id/vel_max" />
+            android:layout_toRightOf="@+id/vel_max"
+            android:layout_above="@+id/vel_prom" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -101,16 +102,6 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/distance"
             android:layout_toEndOf="@+id/distance" />
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@+id/kilometers_traveled_data"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
-
-        </LinearLayout>
 
     </RelativeLayout>
 

@@ -34,7 +34,7 @@ public class ChronometerService extends Service {
 
     }
 
-    public double getSeconds (){
+    public Double getSeconds (){
         return mChronometer.getSeconds();
     }
 
