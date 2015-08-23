@@ -30,7 +30,7 @@ public class GPSService extends Service {
     double lastLon = 0;
     double lastLat = 0;
 
-
+    private int count = 0 ;
     //variables gps
 
     private LocationManager locationManager;
@@ -58,23 +58,25 @@ public class GPSService extends Service {
                     maxSpeed = currentSpeed;
 
                 //start location manager
-                LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+                //LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
 
                 //Get last location
-                Location loc = lm.getLastKnownLocation(lm.GPS_PROVIDER);
-
-                lastLat = loc.getLatitude();
-                lastLon = loc.getLongitude();
-
-                //Request new location
-                lm.requestLocationUpdates(lm.GPS_PROVIDER, 0, 0, locationListener);
-
-                //Get new location
-                Location loc2 = lm.getLastKnownLocation(lm.GPS_PROVIDER);
-
-                //get the current lat and long
-                currentLat = loc2.getLatitude();
-                currentLon = loc2.getLongitude();
+                //Location loc = lm.getLastKnownLocation(lm.GPS_PROVIDER);
+                if (count == 0) {
+                    lastLat = location.getLatitude();
+                    lastLon = location.getLongitude();
+                    currentLat = location.getLatitude();
+                    currentLon = location.getLongitude();
+                }
+                else
+                {
+                    lastLat = currentLat ;
+                    lastLon = currentLon ;
+                    currentLat = location.getLatitude();
+                    currentLon = location.getLongitude();
+                }
+                count++;
+                
 
                 Location locationA = new Location("point A");
                 locationA.setLatitude(lastLat);
