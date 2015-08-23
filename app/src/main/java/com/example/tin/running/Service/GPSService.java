@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 import com.example.tin.running.R;
+import com.google.android.gms.maps.model.LatLng;
 
 public class GPSService extends Service {
 
@@ -24,6 +25,8 @@ public class GPSService extends Service {
     private double currentSpeed = 0.0;
 
     // variables auxiliares
+
+    private LatLng coordinate ;
 
     double currentLon = 0;
     double currentLat = 0;
@@ -67,6 +70,7 @@ public class GPSService extends Service {
                     lastLon = location.getLongitude();
                     currentLat = location.getLatitude();
                     currentLon = location.getLongitude();
+                    coordinate = new LatLng(currentLat, currentLon);
                 }
                 else
                 {
@@ -74,6 +78,7 @@ public class GPSService extends Service {
                     lastLon = currentLon ;
                     currentLat = location.getLatitude();
                     currentLon = location.getLongitude();
+                    coordinate = new LatLng(currentLat, currentLon);
                 }
                 count++;
                 
@@ -130,6 +135,7 @@ public class GPSService extends Service {
         return currentSpeed;
     }
 
+    public LatLng getCoordinate (){ return coordinate;}
 
     private final IBinder mGPSBinder = new GPSBinder();
 
