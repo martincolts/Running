@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.DataSetObserver;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -30,6 +31,8 @@ import android.widget.Toast;
 import com.example.tin.running.Service.ChronometerService;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Handler;
@@ -235,6 +238,42 @@ public class fragment_stats extends Fragment {
                     avSpeedData.setText(new DecimalFormat("#.#").format(avSpeed) + " Km/h");
 
                     chronometer.setText(MainActivity.mChronometerService.getFormatTime());
+                }
+            }
+        });
+
+        stopRace = (Button) this.findViewById(R.id.stop_race);
+        stopRace.setEnabled(false);
+        stopRace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (MainActivity.mBoundChrono) {
+                    fragmentsStats.chronometer.setText(MainActivity.mChronometerService.getFormatTime());
+                }
+                if (mBound) {
+                    Toast.makeText(MainActivity.this,getString(R.string.finish_gps), Toast.LENGTH_SHORT)
+                            .show();
+                    unbindService(mGPSServiceConnection);
+                    mBound = false;
+                }
+                unbindService(mChronoServiceConnection);
+                raceOnStart = false;
+                mBoundChrono = false;
+                stopRace.setEnabled(false);
+
+                SQLiteDatabase db = usdbh.getWritableDatabase();
+
+                //Si hemos abierto correctamente la base de datos
+                if (db != null) {
+
+                    SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+                    String fecha = s.format(new Date());
+
+                    db.execSQL("INSERT INTO Stats (fecha, distancia, velMax, velPromedio, tiempo) " +
+                            "VALUES ('" + fecha + "', '" + fragmentsStats.distanceData.getText() + "', '" + fragmentsStats.maxSpeedData.getText() + "', '" + fragmentsStats.avSpeedData.getText() + "', '" + fragmentsStats.chronometer.getText() + "')");
+
+                    //Cerramos la base de datos
+                    db.close();
                 }
             }
         });

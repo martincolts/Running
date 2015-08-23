@@ -109,41 +109,6 @@ public class MainActivity extends ActionBarActivity
 
         usdbh = new StatsSQLiteHelper(this,"DB_Stats", null, 1);
 
-        stopRace = (Button) this.findViewById(R.id.stop_race);
-        stopRace.setEnabled(false);
-        stopRace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (MainActivity.mBoundChrono) {
-                    fragmentsStats.chronometer.setText(MainActivity.mChronometerService.getFormatTime());
-                }
-                if (mBound) {
-                    Toast.makeText(MainActivity.this,getString(R.string.finish_gps), Toast.LENGTH_SHORT)
-                            .show();
-                    unbindService(mGPSServiceConnection);
-                    mBound = false;
-                }
-                unbindService(mChronoServiceConnection);
-                raceOnStart = false;
-                mBoundChrono = false;
-                stopRace.setEnabled(false);
-
-                SQLiteDatabase db = usdbh.getWritableDatabase();
-
-                //Si hemos abierto correctamente la base de datos
-                if (db != null) {
-
-                    SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy hh:mm");
-                    String fecha = s.format(new Date());
-
-                    db.execSQL("INSERT INTO Stats (fecha, distancia, velMax, velPromedio, tiempo) " +
-                            "VALUES ('" + fecha + "', '" + fragmentsStats.distanceData.getText() + "', '" + fragmentsStats.maxSpeedData.getText() + "', '" + fragmentsStats.avSpeedData.getText() + "', '" + fragmentsStats.chronometer.getText() + "')");
-
-                    //Cerramos la base de datos
-                    db.close();
-                }
-            }
-        });
     }
 
     @Override
