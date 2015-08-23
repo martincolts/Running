@@ -56,7 +56,7 @@ public class fragment_stats extends Fragment {
     public TextView avSpeedData ;
     public TextView currentSpeed ;
     public TextView chronometer ;
-
+    public static Button stopRace ;
     public Button actualizar ;
 
     /**
@@ -242,26 +242,26 @@ public class fragment_stats extends Fragment {
             }
         });
 
-        stopRace = (Button) this.findViewById(R.id.stop_race);
+        stopRace = (Button) getActivity().findViewById(R.id.stop_race);
         stopRace.setEnabled(false);
         stopRace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (MainActivity.mBoundChrono) {
-                    fragmentsStats.chronometer.setText(MainActivity.mChronometerService.getFormatTime());
+                    chronometer.setText(MainActivity.mChronometerService.getFormatTime());
                 }
-                if (mBound) {
-                    Toast.makeText(MainActivity.this,getString(R.string.finish_gps), Toast.LENGTH_SHORT)
+                if (MainActivity.mBound) {
+                    Toast.makeText(getActivity(),getString(R.string.finish_gps), Toast.LENGTH_SHORT)
                             .show();
-                    unbindService(mGPSServiceConnection);
-                    mBound = false;
+                    getActivity().unbindService(MainActivity.mGPSServiceConnection);
+                    MainActivity.mBound = false;
                 }
-                unbindService(mChronoServiceConnection);
-                raceOnStart = false;
-                mBoundChrono = false;
+                getActivity().unbindService(MainActivity.mChronoServiceConnection);
+                MainActivity.raceOnStart = false;
+                MainActivity.mBoundChrono = false;
                 stopRace.setEnabled(false);
 
-                SQLiteDatabase db = usdbh.getWritableDatabase();
+                SQLiteDatabase db = MainActivity.usdbh.getWritableDatabase();
 
                 //Si hemos abierto correctamente la base de datos
                 if (db != null) {
@@ -270,7 +270,7 @@ public class fragment_stats extends Fragment {
                     String fecha = s.format(new Date());
 
                     db.execSQL("INSERT INTO Stats (fecha, distancia, velMax, velPromedio, tiempo) " +
-                            "VALUES ('" + fecha + "', '" + fragmentsStats.distanceData.getText() + "', '" + fragmentsStats.maxSpeedData.getText() + "', '" + fragmentsStats.avSpeedData.getText() + "', '" + fragmentsStats.chronometer.getText() + "')");
+                            "VALUES ('" + fecha + "', '" + distanceData.getText() + "', '" + maxSpeedData.getText() + "', '" + avSpeedData.getText() + "', '" + chronometer.getText() + "')");
 
                     //Cerramos la base de datos
                     db.close();

@@ -39,7 +39,7 @@ public class MainActivity extends ActionBarActivity
     private int contGPSStart = 0;
     public static GPSService mGPSService;
     public static boolean raceOnStart = false ;
-    public Button stopRace ;
+
     public static StatsSQLiteHelper usdbh;
 
     /**
@@ -53,7 +53,7 @@ public class MainActivity extends ActionBarActivity
 
     // Creacion del ChronnometerServiceConnection
     public static boolean mBoundChrono;
-    public ServiceConnection mChronoServiceConnection = new ServiceConnection() {
+    public static ServiceConnection mChronoServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             ChronometerService.ChronometerBinder mChronometerBinder = (ChronometerService.ChronometerBinder) service;
@@ -75,7 +75,7 @@ public class MainActivity extends ActionBarActivity
 
     // Creación del GPSServiceConnection
     public static boolean mBound;
-    public ServiceConnection mGPSServiceConnection = new ServiceConnection() {
+    public static ServiceConnection mGPSServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             GPSService.GPSBinder mGPSBinder = (GPSService.GPSBinder) service;
@@ -207,7 +207,7 @@ public class MainActivity extends ActionBarActivity
             bindService(intentChrono, mChronoServiceConnection, Context.BIND_AUTO_CREATE);
             raceOnStart = true ;
             mBoundChrono = true ;
-            stopRace.setEnabled(true);
+            fragment_stats.stopRace.setEnabled(true);
         }
         return super.onOptionsItemSelected(item);
     }
