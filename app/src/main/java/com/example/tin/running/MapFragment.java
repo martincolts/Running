@@ -145,7 +145,6 @@ public class MapFragment extends Fragment {
                 actualizarMapa(this.mGoogleMap);
             }
         }
-
         return super.onOptionsItemSelected(item);
     }
 
