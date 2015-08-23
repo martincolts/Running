@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -72,7 +73,7 @@ public class MapFragment extends Fragment {
 
         mGoogleMap = mMapView.getMap();
         mGoogleMap.setMyLocationEnabled(true);
-
+/*
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
@@ -96,7 +97,7 @@ public class MapFragment extends Fragment {
             public void onProviderDisabled(String provider) {
             }
         };
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);*/
         return v ;
     }
 
@@ -136,6 +137,19 @@ public class MapFragment extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.start_race){
+            if (MainActivity.raceOnStart && MainActivity.mBound){
+                actualizarMapa(this.mGoogleMap);
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         mMapView.onResume();
@@ -159,8 +173,15 @@ public class MapFragment extends Fragment {
         mMapView.onLowMemory();
     }
 
-    private void setUpMap() {
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+
+    public static void actualizarMapa (GoogleMap mGoogleMap) {
+
+        LatLng coordinate = MainActivity.mGPSService.getCoordinate() ;
+        CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(coordinate, 17);
+        mGoogleMap.animateCamera(yourLocation);
+        Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                        .position(coordinate).visible(true).icon(BitmapDescriptorFactory.fromAsset("redCircule.png"))
+        );
     }
 
 }
