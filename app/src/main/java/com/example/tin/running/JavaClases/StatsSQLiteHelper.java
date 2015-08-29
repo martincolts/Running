@@ -13,7 +13,7 @@ public class StatsSQLiteHelper extends SQLiteOpenHelper {
     public StatsSQLiteHelper(Context contexto, String nombre, CursorFactory factory, int version) {
         super(contexto, nombre, factory, version);
     }
-    //comentario prueba.
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
