@@ -34,6 +34,7 @@ public class GPSService extends Service {
     double lastLat = 0;
 
     private int count = 0 ;
+
     //variables gps
 
     private LocationManager locationManager;
