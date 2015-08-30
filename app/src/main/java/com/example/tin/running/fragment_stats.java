@@ -59,6 +59,7 @@ public class fragment_stats extends Fragment {
     public static Button stopRace ;
     public Button actualizar ;
 
+    public Bundle savedInstanceState ;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -105,6 +106,8 @@ public class fragment_stats extends Fragment {
             avSpeedData = (TextView) getActivity().findViewById(R.id.average_speed_data );
             chronometer = (TextView) getActivity().findViewById(R.id.chronometer2);
         }
+
+
         return v ;
 
     }
@@ -112,13 +115,7 @@ public class fragment_stats extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState != null){
-            savedInstanceState.putString("distanceData", distanceData.getText().toString());
-            savedInstanceState.putString("maxSpeedData", maxSpeedData.getText().toString());
-            savedInstanceState.putString("avSpeedData", avSpeedData.getText().toString());
-            savedInstanceState.putString("currentSpeed", currentSpeed.getText().toString());
-            savedInstanceState.putString("chronometer", chronometer.toString());
-        }
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -213,6 +210,8 @@ public class fragment_stats extends Fragment {
         currentSpeed = (TextView) getActivity().findViewById(R.id.current_speed_data);
         avSpeedData = (TextView) getActivity().findViewById(R.id.average_speed_data);
         chronometer = (TextView) getActivity().findViewById(R.id.chronometer2);
+
+
 
         actualizar = (Button) getActivity().findViewById(R.id.actualizar);
 
@@ -309,26 +308,48 @@ public class fragment_stats extends Fragment {
         }
     }
 */
+
+   /* @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        savedInstanceState = new Bundle();
+        savedInstanceState.putString("distanceData", distanceData.getText().toString());
+        savedInstanceState.putString("maxSpeedData", maxSpeedData.getText().toString());
+        savedInstanceState.putString("avSpeedData", avSpeedData.getText().toString());
+        savedInstanceState.putString("currentSpeed", currentSpeed.getText().toString());
+        savedInstanceState.putString("chronometer", chronometer.toString());
+        if ( !stopRace.isEnabled())
+            savedInstanceState.putBoolean("stopRace", false );
+
+    }*/
+
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-            savedInstanceState.putString("distanceData", distanceData.getText().toString());
-            savedInstanceState.putString("maxSpeedData", maxSpeedData.getText().toString());
-            savedInstanceState.putString("avSpeedData", avSpeedData.getText().toString());
-            savedInstanceState.putString("currentSpeed", currentSpeed.getText().toString());
-            savedInstanceState.putString("chronometer", chronometer.toString());
+    public void onPause() {
+        super.onPause();
+        savedInstanceState = new Bundle();
+        savedInstanceState.putString("distanceData", distanceData.getText().toString());
+        savedInstanceState.putString("maxSpeedData", maxSpeedData.getText().toString());
+        savedInstanceState.putString("avSpeedData", avSpeedData.getText().toString());
+        savedInstanceState.putString("currentSpeed", currentSpeed.getText().toString());
+        savedInstanceState.putString("chronometer", chronometer.getText().toString());
+        if ( !stopRace.isEnabled())
+            savedInstanceState.putBoolean("stopRace", false );
     }
 
     @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
+    public void onResume() {
+        super.onResume();
         if (savedInstanceState != null) {
             distanceData.setText(savedInstanceState.getString("distanceData"));
             maxSpeedData.setText(savedInstanceState.getString("maxSpeedData"));
             avSpeedData.setText(savedInstanceState.getString("avSpeedData"));
             currentSpeed.setText(savedInstanceState.getString("currentSpeed"));
             chronometer.setText(savedInstanceState.getString("chronometer"));
+            if (savedInstanceState.containsKey("stopRace")) {
+                stopRace.setEnabled(false);
+                Boolean a = savedInstanceState.getBoolean ("stopRace");
+            }
         }
     }
-
 }
