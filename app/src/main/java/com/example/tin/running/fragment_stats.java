@@ -218,8 +218,6 @@ public class fragment_stats extends Fragment {
 
             @Override
             public void onClick(View v) {
-                MainActivity.threadChrono.stop();
-                MainActivity.threadStats.stop();
 
                 if (MainActivity.mBoundChrono) {
                     chronometer.setText(MainActivity.mChronometerService.getFormatTime());
@@ -250,6 +248,10 @@ public class fragment_stats extends Fragment {
             @Override
 
             public void onClick(View v) {
+
+                MainActivity.threadChrono.interrupt();
+                MainActivity.threadStats.interrupt();
+
                 if (MainActivity.mBoundChrono) {
                     chronometer.setText(MainActivity.mChronometerService.getFormatTime());
                 }

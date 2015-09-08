@@ -7,6 +7,12 @@ import com.example.tin.running.fragment_stats;
  * Created by leo on 08/09/2015.
  */
 public class ThreadChrono extends Thread{
+    HandlerChrono handler ;
+
+    public ThreadChrono(){
+        handler = new HandlerChrono(fragment_stats.chronometer);
+    }
+
     @Override
     public void run() {
         while (MainActivity.mBoundChrono) {
@@ -15,7 +21,8 @@ public class ThreadChrono extends Thread{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            fragment_stats.chronometer.setText(MainActivity.mChronometerService.getFormatTime());
+            handler.setCron(MainActivity.mChronometerService.getFormatTime());
+            handler.act();
         }
     }
 }
