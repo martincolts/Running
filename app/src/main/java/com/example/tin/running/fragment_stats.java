@@ -233,12 +233,12 @@ public class fragment_stats extends Fragment {
                     Double currentSpeed2 = MainActivity.mGPSService.getCurrentSpeed() * (3.6);
                     currentSpeed.setText(new DecimalFormat("#.#").format(currentSpeed2) + " Km/h");
 
-                    Double avSpeed = ( distance2 *3.6 ) / MainActivity.mChronometerService.getSeconds() ;
+                    Double avSpeed = new Double(distance2 / MainActivity.mChronometerService.getSeconds()*3.6);
 
-                    String a = new DecimalFormat("#.#").format(avSpeed)  +" Km/h" ;
+                    String a = new DecimalFormat("#.#").format(avSpeed);
 
                     //avSpeedData.setText(new DecimalFormat("#.#").format(avSpeed) + " Km/h");
-                    avSpeedData.setText (avSpeed+" Km/h");
+                    avSpeedData.setText (a);
 
                     chronometer.setText(MainActivity.mChronometerService.getFormatTime());
                 }
