@@ -333,8 +333,7 @@ public class fragment_stats extends Fragment {
         savedInstanceState.putString("avSpeedData", avSpeedData.getText().toString());
         savedInstanceState.putString("currentSpeed", currentSpeed.getText().toString());
         savedInstanceState.putString("chronometer", chronometer.getText().toString());
-        if ( !stopRace.isEnabled())
-            savedInstanceState.putBoolean("stopRace", false );
+        savedInstanceState.putBoolean("stopRace", stopRace.isEnabled() );
     }
 
     @Override
@@ -346,10 +345,9 @@ public class fragment_stats extends Fragment {
             avSpeedData.setText(savedInstanceState.getString("avSpeedData"));
             currentSpeed.setText(savedInstanceState.getString("currentSpeed"));
             chronometer.setText(savedInstanceState.getString("chronometer"));
-            if (savedInstanceState.containsKey("stopRace")) {
-                stopRace.setEnabled(false);
-                Boolean a = savedInstanceState.getBoolean ("stopRace");
-            }
+            stopRace.setEnabled(savedInstanceState.getBoolean ("stopRace"));
+
         }
     }
 }
+
