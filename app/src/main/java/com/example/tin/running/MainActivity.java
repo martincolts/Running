@@ -246,8 +246,8 @@ public class MainActivity extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
+            return inflater.inflate(R.layout.fragment_main, container, false);
+
         }
 
         @Override
@@ -259,28 +259,10 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void addPositions (){
-        LocationListener ll = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                LatLng coordinate = mGPSService.getCoordinate();
-                MapFragment.positions.add(coordinate);
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-
-            }
-        };
+        while (raceOnStart && mBound){
+            LatLng coordinate = mGPSService.getCoordinate();
+            MapFragment.positions.add(coordinate);
+        }
     }
 
     public GPSService getmGPSService (){
