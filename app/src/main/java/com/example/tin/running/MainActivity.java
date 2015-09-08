@@ -27,6 +27,8 @@ import android.widget.Toast;
 import com.example.tin.running.JavaClases.StatsSQLiteHelper;
 import com.example.tin.running.Service.ChronometerService;
 import com.example.tin.running.Service.GPSService;
+import com.example.tin.running.Threads.ThreadChrono;
+import com.example.tin.running.Threads.ThreadStats;
 import com.google.android.gms.maps.internal.MapLifecycleDelegate;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -54,6 +56,10 @@ public class MainActivity extends ActionBarActivity
     private fragment_stats  fragmentsStats = fragment_stats.newInstance(state);
     private MapFragment fragmentMap = MapFragment.newInstance("null","null");
     private DataFragment fragmentData = DataFragment.newInstance(state);
+
+    public static Thread threadChrono ;
+    public static Thread threadStats ;
+
 
     // Creacion del ChronnometerServiceConnection
     public static boolean mBoundChrono;
@@ -104,6 +110,7 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
     }
 
     @Override
@@ -205,7 +212,12 @@ public class MainActivity extends ActionBarActivity
         if (id == R.id.exit)
             finish();
         Intent intentChrono = new Intent (this, ChronometerService.class);
+
         if (id==R.id.start_race){
+            threadChrono = new ThreadChrono();
+            threadChrono.start();
+            threadStats = new ThreadStats();
+            threadStats.start();
             MapFragment.positions.removeAllElements();
             Toast.makeText(this, "Se inicia la carrera", Toast.LENGTH_SHORT)
                     .show();

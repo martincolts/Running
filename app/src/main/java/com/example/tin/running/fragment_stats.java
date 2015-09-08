@@ -29,6 +29,8 @@ import android.widget.Toast;
 
 
 import com.example.tin.running.Service.ChronometerService;
+import com.example.tin.running.Threads.ThreadChrono;
+import com.example.tin.running.Threads.ThreadStats;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -51,11 +53,11 @@ public class fragment_stats extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public TextView distanceData ;
-    public TextView maxSpeedData ;
-    public TextView avSpeedData ;
-    public TextView currentSpeed ;
-    public TextView chronometer ;
+    public static TextView distanceData ;
+    public static TextView maxSpeedData ;
+    public static TextView avSpeedData ;
+    public static TextView currentSpeed ;
+    public static TextView chronometer ;
     public static Button stopRace ;
     public Button actualizar ;
 
@@ -213,8 +215,12 @@ public class fragment_stats extends Fragment {
         actualizar = (Button) getActivity().findViewById(R.id.actualizar);
 
         actualizar.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                MainActivity.threadChrono.stop();
+                MainActivity.threadStats.stop();
+
                 if (MainActivity.mBoundChrono) {
                     chronometer.setText(MainActivity.mChronometerService.getFormatTime());
                 }
@@ -242,6 +248,7 @@ public class fragment_stats extends Fragment {
         stopRace.setEnabled(false);
         stopRace.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View v) {
                 if (MainActivity.mBoundChrono) {
                     chronometer.setText(MainActivity.mChronometerService.getFormatTime());
