@@ -5,6 +5,8 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.IBinder;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
@@ -25,6 +27,8 @@ import android.widget.Toast;
 import com.example.tin.running.JavaClases.StatsSQLiteHelper;
 import com.example.tin.running.Service.ChronometerService;
 import com.example.tin.running.Service.GPSService;
+import com.google.android.gms.maps.internal.MapLifecycleDelegate;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -202,12 +206,14 @@ public class MainActivity extends ActionBarActivity
             finish();
         Intent intentChrono = new Intent (this, ChronometerService.class);
         if (id==R.id.start_race){
+            MapFragment.positions.removeAllElements();
             Toast.makeText(this, "Se inicia la carrera", Toast.LENGTH_SHORT)
                     .show();
             bindService(intentChrono, mChronoServiceConnection, Context.BIND_AUTO_CREATE);
             raceOnStart = true ;
             mBoundChrono = true ;
             fragment_stats.stopRace.setEnabled(true);
+            addPositions();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -252,6 +258,30 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    public void addPositions (){
+        LocationListener ll = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                LatLng coordinate = mGPSService.getCoordinate();
+                MapFragment.positions.add(coordinate);
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+
+            }
+        };
+    }
 
     public GPSService getmGPSService (){
         return mGPSService ;

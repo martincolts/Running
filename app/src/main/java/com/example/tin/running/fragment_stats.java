@@ -276,46 +276,7 @@ public class fragment_stats extends Fragment {
 
 
     }
-/*
-    @Override
-    public void onResume() {
-        super.onResume();
 
-
-
-        if (MainActivity.mBound && MainActivity.mBoundChrono) {
-
-            Double maxSpeed1 = MainActivity.mGPSService.getMaxSpeed() * (3.6);
-            maxSpeedData.setText(maxSpeed1.toString() + " Km/h.");
-
-            Double distance2 = MainActivity.mGPSService.getDistance() * (3.6);
-            distanceData.setText(distance2.toString() + " Km.");
-
-            Double currentSpeed2 = MainActivity.mGPSService.getCurrentSpeed();
-            currentSpeed.setText(currentSpeed2.toString() + " Km/h.");
-
-            Double avSpeed = distance2 / MainActivity.mChronometerService.getSeconds() * 3600;
-            avSpeedData.setText(avSpeed.toString() + " Km/h.");
-
-            chronometer.setText(MainActivity.mChronometerService.getFormatTime());
-        }
-    }
-*/
-
-   /* @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        savedInstanceState = new Bundle();
-        savedInstanceState.putString("distanceData", distanceData.getText().toString());
-        savedInstanceState.putString("maxSpeedData", maxSpeedData.getText().toString());
-        savedInstanceState.putString("avSpeedData", avSpeedData.getText().toString());
-        savedInstanceState.putString("currentSpeed", currentSpeed.getText().toString());
-        savedInstanceState.putString("chronometer", chronometer.toString());
-        if ( !stopRace.isEnabled())
-            savedInstanceState.putBoolean("stopRace", false );
-
-    }*/
 
     @Override
     public void onPause() {
