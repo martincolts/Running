@@ -75,31 +75,7 @@ public class MapFragment extends Fragment {
 
         mGoogleMap = mMapView.getMap();
         mGoogleMap.setMyLocationEnabled(true);
-/*
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
 
-                double lat = location.getLatitude();
-                double lon = location.getLongitude();
-                LatLng coordinate = new LatLng(lat, lon);
-                CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(coordinate, 17);
-                mGoogleMap.animateCamera(yourLocation);
-                Marker marker = mGoogleMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(lat, lon)).visible(true).icon(BitmapDescriptorFactory.fromAsset("redCircule.png"))
-                );
-            }
-
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
-
-            public void onProviderEnabled(String provider) {
-            }
-
-            public void onProviderDisabled(String provider) {
-            }
-        };
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);*/
         return v ;
     }
 
