@@ -27,12 +27,14 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.CameraUpdate;
 
+import java.util.Vector;
+
 public class MapFragment extends Fragment {
 
 
     private MapView mMapView ;
     private GoogleMap mGoogleMap ;
-
+    private Vector<LatLng> positions = new Vector <LatLng>();
     private OnFragmentInteractionListener mListener;
 
 
@@ -142,7 +144,7 @@ public class MapFragment extends Fragment {
 
         if (id == R.id.start_race){
             if (MainActivity.raceOnStart && MainActivity.mBound){
-                actualizarMapa(this.mGoogleMap);
+                actualizarMapa(mGoogleMap);
             }
         }
         return super.onOptionsItemSelected(item);
@@ -152,6 +154,12 @@ public class MapFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        for (int i= 0 ; i < positions.size();i++){
+            LatLng coordinate = positions.elementAt(i);
+            Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                            .position(coordinate).visible(true).icon(BitmapDescriptorFactory.fromAsset("redCircule.png"))
+            );
+        }
     }
 
     @Override
@@ -173,9 +181,10 @@ public class MapFragment extends Fragment {
     }
 
 
-    public static void actualizarMapa (GoogleMap mGoogleMap) {
+    public void actualizarMapa (GoogleMap mGoogleMap) {
 
         LatLng coordinate = MainActivity.mGPSService.getCoordinate() ;
+        positions.add(coordinate);
         CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(coordinate, 17);
         mGoogleMap.animateCamera(yourLocation);
         Marker marker = mGoogleMap.addMarker(new MarkerOptions()
