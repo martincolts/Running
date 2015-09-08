@@ -259,22 +259,24 @@ public class MainActivity extends ActionBarActivity
     }
 
     public void addPositions (){
-        if (raceOnStart && mBound){
+
             new Thread(){
                 @Override
                 public void run() {
-                    try {
-                        sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    while (raceOnStart && mBound) {
+                        try {
+                            sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        LatLng coordinate = mGPSService.getCoordinate();
+                        MapFragment.positions.add(coordinate);
                     }
-                    LatLng coordinate = mGPSService.getCoordinate();
-                    MapFragment.positions.add(coordinate);
                 }
             }.start();
 
-        }
     }
+
 
     public GPSService getmGPSService (){
         return mGPSService ;
