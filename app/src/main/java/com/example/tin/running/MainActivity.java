@@ -2,36 +2,32 @@ package com.example.tin.running;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
-import android.location.LocationListener;
+import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.tin.running.JavaClases.StatsSQLiteHelper;
 import com.example.tin.running.Service.ChronometerService;
 import com.example.tin.running.Service.GPSService;
-import com.google.android.gms.maps.internal.MapLifecycleDelegate;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+//import android.support.v4.widget.DrawerLayout;
+//import com.google.android.gms.maps.internal.MapLifecycleDelegate;
+//import com.google.android.gms.maps.model.LatLng;
 
 
 public class MainActivity extends ActionBarActivity

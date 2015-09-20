@@ -156,11 +156,15 @@ public class MapFragment extends Fragment {
 
         /*LatLng coordinate = MainActivity.mGPSService.getCoordinate() ;
         positions.add(coordinate);*/
-        for (int i = 0 ; i < positions.size(); i++) {
-            LatLng coordinate = positions.elementAt(i);
-            Marker marker = mGoogleMap.addMarker(new MarkerOptions()
-                            .position(coordinate).visible(true).icon(BitmapDescriptorFactory.fromAsset("redCircule.png"))
-            );
+        if (positions != null) {
+            if ( positions.size()>0) {
+                for (int i = 0; i < positions.size(); i++) {
+                    LatLng coordinate = positions.elementAt(i);
+                    Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                                    .position(coordinate).visible(true).icon(BitmapDescriptorFactory.fromAsset("redCircule.png"))
+                    );
+                }
+            }
         }
     }
 
