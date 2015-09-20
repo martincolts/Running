@@ -202,7 +202,9 @@ public class MainActivity extends ActionBarActivity
             finish();
         Intent intentChrono = new Intent (this, ChronometerService.class);
         if (id==R.id.start_race){
-            MapFragment.positions.removeAllElements();
+            if (MapFragment.positions != null) {
+                MapFragment.positions.removeAllElements();
+            }
             Toast.makeText(this, "Se inicia la carrera", Toast.LENGTH_SHORT)
                     .show();
             bindService(intentChrono, mChronoServiceConnection, Context.BIND_AUTO_CREATE);

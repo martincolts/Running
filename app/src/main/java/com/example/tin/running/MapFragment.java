@@ -37,7 +37,6 @@ public class MapFragment extends Fragment {
     public static Vector<LatLng> positions = new Vector <LatLng>();
     private OnFragmentInteractionListener mListener;
 
-
     public static MapFragment newInstance(String param1, String param2) {
         MapFragment fragment = new MapFragment();
         Bundle args = new Bundle();
@@ -120,7 +119,7 @@ public class MapFragment extends Fragment {
 
         if (id == R.id.start_race){
             if (MainActivity.raceOnStart && MainActivity.mBound){
-                actualizarMapa(this.mGoogleMap);
+                actualizarMapa();
             }
         }
         return super.onOptionsItemSelected(item);
@@ -130,13 +129,16 @@ public class MapFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mMapView.onResume();
-        actualizarMapa(this.mGoogleMap);
+        actualizarMapa();
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
         mMapView.onPause();
+
+
     }
 
     @Override
@@ -152,17 +154,17 @@ public class MapFragment extends Fragment {
     }
 
 
-    public void actualizarMapa (GoogleMap mGoogleMap) {
+    public void actualizarMapa () {
 
-        /*LatLng coordinate = MainActivity.mGPSService.getCoordinate() ;
-        positions.add(coordinate);*/
         if (positions != null) {
             if ( positions.size()>0) {
                 for (int i = 0; i < positions.size(); i++) {
                     LatLng coordinate = positions.elementAt(i);
-                    Marker marker = mGoogleMap.addMarker(new MarkerOptions()
-                                    .position(coordinate).visible(true).icon(BitmapDescriptorFactory.fromAsset("redCircule.png"))
-                    );
+                    if (coordinate != null) {
+                        Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                                        .position(coordinate).visible(true).icon(BitmapDescriptorFactory.fromAsset("redCircule.png"))
+                        );
+                    }
                 }
             }
         }
