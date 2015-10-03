@@ -23,10 +23,14 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.Button;
 import android.widget.Toast;
+import android.app.ActivityManager;
+
 
 import com.example.tin.running.JavaClases.StatsSQLiteHelper;
 import com.example.tin.running.Service.ChronometerService;
 import com.example.tin.running.Service.GPSService;
+import com.example.tin.running.Threads.HandlerChrono;
+import com.example.tin.running.Threads.HandlerStats;
 import com.example.tin.running.Threads.ThreadChrono;
 import com.example.tin.running.Threads.ThreadStats;
 import com.google.android.gms.maps.internal.MapLifecycleDelegate;
@@ -59,7 +63,8 @@ public class MainActivity extends ActionBarActivity
 
     public static Thread threadChrono ;
     public static Thread threadStats ;
-
+    private HandlerChrono handlerChrono ;
+    private HandlerStats handlerStats;
 
     // Creacion del ChronnometerServiceConnection
     public static boolean mBoundChrono;
@@ -119,7 +124,8 @@ public class MainActivity extends ActionBarActivity
         super.onStart();
 
         usdbh = new StatsSQLiteHelper(this,"DB_Stats", null, 1);
-
+        handlerChrono = new HandlerChrono(fragment_stats.chronometer);
+        handlerStats = new HandlerStats(fragment_stats.maxSpeedData,fragment_stats.distanceData,fragment_stats.currentSpeed,fragment_stats.avSpeedData);
     }
 
     @Override
@@ -211,21 +217,23 @@ public class MainActivity extends ActionBarActivity
         }
         if (id == R.id.exit)
             finish();
-        Intent intentChrono = new Intent (this, ChronometerService.class);
 
+        Intent intentChrono = new Intent (this, ChronometerService.class);
         if (id==R.id.start_race){
-            threadChrono = new ThreadChrono();
-            threadChrono.start();
-            threadStats = new ThreadStats();
-            threadStats.start();
             MapFragment.positions.removeAllElements();
             Toast.makeText(this, "Se inicia la carrera", Toast.LENGTH_SHORT)
                     .show();
+            startService(intentChrono);
             bindService(intentChrono, mChronoServiceConnection, Context.BIND_AUTO_CREATE);
+            //bindService(intentChrono, mChronoServiceConnection, 0);
             raceOnStart = true ;
             mBoundChrono = true ;
             fragment_stats.stopRace.setEnabled(true);
             addPositions();
+            threadChrono = new ThreadChrono(handlerChrono);
+            threadChrono.start();
+            threadStats = new ThreadStats(handlerStats);
+            threadStats.start();
         }
         return super.onOptionsItemSelected(item);
     }

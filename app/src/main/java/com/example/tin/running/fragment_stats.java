@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 
 import com.example.tin.running.Service.ChronometerService;
+import com.example.tin.running.Threads.HandlerChrono;
 import com.example.tin.running.Threads.ThreadChrono;
 import com.example.tin.running.Threads.ThreadStats;
 
@@ -69,9 +70,6 @@ public class fragment_stats extends Fragment {
      * @return A new instance of fragment fragment_stats.
      */
     // TODO: Rename and change types and number of parameters
-
-
-
 
     public static fragment_stats newInstance(Bundle arguments) {
         fragment_stats fragment = new fragment_stats();
@@ -210,8 +208,6 @@ public class fragment_stats extends Fragment {
         avSpeedData = (TextView) getActivity().findViewById(R.id.average_speed_data);
         chronometer = (TextView) getActivity().findViewById(R.id.chronometer2);
 
-
-
         actualizar = (Button) getActivity().findViewById(R.id.actualizar);
 
         actualizar.setOnClickListener(new View.OnClickListener() {
@@ -296,7 +292,9 @@ public class fragment_stats extends Fragment {
         savedInstanceState.putString("avSpeedData", avSpeedData.getText().toString());
         savedInstanceState.putString("currentSpeed", currentSpeed.getText().toString());
         savedInstanceState.putString("chronometer", chronometer.getText().toString());
-        savedInstanceState.putBoolean("stopRace", stopRace.isEnabled() );
+        savedInstanceState.putBoolean("stopRace", stopRace.isEnabled());
+        MainActivity.threadChrono.suspend();
+        MainActivity.threadStats.suspend();
     }
 
     @Override
@@ -308,8 +306,9 @@ public class fragment_stats extends Fragment {
             avSpeedData.setText(savedInstanceState.getString("avSpeedData"));
             currentSpeed.setText(savedInstanceState.getString("currentSpeed"));
             chronometer.setText(savedInstanceState.getString("chronometer"));
-            stopRace.setEnabled(savedInstanceState.getBoolean ("stopRace"));
-
+            stopRace.setEnabled(savedInstanceState.getBoolean("stopRace"));
+            MainActivity.threadChrono.resume();
+            MainActivity.threadStats.resume();
         }
     }
 }

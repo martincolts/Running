@@ -1,6 +1,11 @@
 package com.example.tin.running.Threads;
 
+import android.widget.Toast;
+
+import com.example.tin.running.JavaClases.ServiceTools;
 import com.example.tin.running.MainActivity;
+import com.example.tin.running.R;
+import com.example.tin.running.Service.ChronometerService;
 import com.example.tin.running.fragment_stats;
 
 /**
@@ -9,20 +14,23 @@ import com.example.tin.running.fragment_stats;
 public class ThreadChrono extends Thread{
     HandlerChrono handler ;
 
-    public ThreadChrono(){
-        handler = new HandlerChrono(fragment_stats.chronometer);
+    public ThreadChrono(HandlerChrono handler){
+        this.handler = handler;
     }
 
     @Override
     public void run() {
         while (MainActivity.mBoundChrono) {
             try {
-                sleep(10);
+                sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            handler.setCron(MainActivity.mChronometerService.getFormatTime());
-            handler.act();
+            if (MainActivity.mChronometerService != null) {
+                handler.setCron("" + MainActivity.mChronometerService.getFormatTime());
+                //handler.setCron(""+System.currentTimeMillis());
+                handler.act();
+            }
         }
     }
 }

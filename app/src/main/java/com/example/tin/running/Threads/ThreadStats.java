@@ -10,6 +10,11 @@ import java.text.DecimalFormat;
  */
 public class ThreadStats  extends Thread{
 
+    HandlerStats handler ;
+
+    public ThreadStats(HandlerStats handler){
+        this.handler = handler;
+    }
 
         public void run() {
             while (MainActivity.raceOnStart && MainActivity.mBoundChrono && MainActivity.mBound) {
@@ -18,17 +23,32 @@ public class ThreadStats  extends Thread{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                Double maxSpeed1 = MainActivity.mGPSService.getMaxSpeed() * (3.6);
-                fragment_stats.maxSpeedData.setText(new DecimalFormat("#.#").format(maxSpeed1) + " Km/h");
+                if (MainActivity.mGPSService != null) {
 
-                Double distance2 = (MainActivity.mGPSService.getDistance() / 1000);
-                fragment_stats.distanceData.setText(new DecimalFormat("#.###").format(distance2) + " Km");
+                    Double maxSpeed1 = MainActivity.mGPSService.getMaxSpeed() * (3.6);
+                    Double distance2 = (MainActivity.mGPSService.getDistance() / 1000);
+                    Double currentSpeed2 = MainActivity.mGPSService.getCurrentSpeed() * (3.6);
+                    Double avSpeed = new Double(MainActivity.mGPSService.getDistance() * 3.6 / MainActivity.mChronometerService.getSeconds());
 
-                Double currentSpeed2 = MainActivity.mGPSService.getCurrentSpeed() * (3.6);
-                fragment_stats.currentSpeed.setText(new DecimalFormat("#.#").format(currentSpeed2) + " Km/h");
+                    handler.setStats(new DecimalFormat("#.#").format(maxSpeed1)+" Km/h",
+                                    new DecimalFormat("#.###").format(distance2)+" Km",
+                                    new DecimalFormat("#.#").format(currentSpeed2)+" Km/h",
+                                    new DecimalFormat("#.#").format(avSpeed)+" Km/h");
+                    handler.act();
+                    /*
+                    Double maxSpeed1 = MainActivity.mGPSService.getMaxSpeed() * (3.6);
+                    fragment_stats.maxSpeedData.setText(new DecimalFormat("#.#").format(maxSpeed1) + " Km/h");
 
-                Double avSpeed = new Double(MainActivity.mGPSService.getDistance() * 3.6 / MainActivity.mChronometerService.getSeconds());
-                fragment_stats.avSpeedData.setText(new DecimalFormat("#.#").format(avSpeed) + " Km/h");
+                    Double distance2 = (MainActivity.mGPSService.getDistance() / 1000);
+                    fragment_stats.distanceData.setText(new DecimalFormat("#.###").format(distance2) + " Km");
+
+                    Double currentSpeed2 = MainActivity.mGPSService.getCurrentSpeed() * (3.6);
+                    fragment_stats.currentSpeed.setText(new DecimalFormat("#.#").format(currentSpeed2) + " Km/h");
+
+                    Double avSpeed = new Double(MainActivity.mGPSService.getDistance() * 3.6 / MainActivity.mChronometerService.getSeconds());
+                    fragment_stats.avSpeedData.setText(new DecimalFormat("#.#").format(avSpeed) + " Km/h");
+                    */
+                }
             }
         }
 }

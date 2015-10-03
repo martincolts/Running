@@ -35,16 +35,19 @@ public class ChronometerService extends Service {
     }
 
     public Double getSeconds (){
+
         return mChronometer.getSeconds();
     }
 
     @Override
     public void onDestroy() {
+
         mChronometer.stop();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
+
         return mBinder ;
     }
 

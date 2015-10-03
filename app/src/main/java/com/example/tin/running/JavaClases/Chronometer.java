@@ -38,7 +38,7 @@ public final class Chronometer{
 
     public String getTimeFormated (){
         //ver bien este calculo
-        String s = new String ();
+        String s = "";
         Double minutes = getMinutes();
         Long minutos = minutes.longValue();
         Double seconds = getSeconds();
