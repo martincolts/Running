@@ -115,7 +115,6 @@ public class fragment_stats extends Fragment {
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -148,56 +147,6 @@ public class fragment_stats extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
-
-    /*public static void startChronometer () {
-        chronometer.start();
-    }*/
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.start_race){
-            //empezar a correr el cronometro. y a tomar los datos de la carrera.
-            chronometer = (Chronometer)getActivity().findViewById(R.id.chronometer);
-            chronometer.start();
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
-/*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if ( id == R.id.start_race){
-
-
-
-
-            chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-                @Override
-                public void onChronometerTick(Chronometer cArg) {
-                    long time = SystemClock.elapsedRealtime() - cArg.getBase();
-                    horaActual = (double) (time / 36000000);
-                    int h = (int) (time / 3600000);
-                    int m = (int) (time - h * 3600000) / 60000;
-                    int s = (int) (time - h * 3600000 - m * 60000) / 1000;
-                    String hh = h < 10 ? "0" + h : h + "";
-                    String mm = m < 10 ? "0" + m : m + "";
-                    String ss = s < 10 ? "0" + s : s + "";
-                    cArg.setText(hh + ":" + mm + ":" + ss);
-                }
-            });
-
-            return true ;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-        */
 
     @Override
     public void onStart() {
@@ -312,4 +261,3 @@ public class fragment_stats extends Fragment {
         }
     }
 }
-
