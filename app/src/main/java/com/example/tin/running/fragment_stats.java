@@ -228,9 +228,7 @@ public class fragment_stats extends Fragment {
             }
         });
 
-
     }
-
 
     @Override
     public void onPause() {
